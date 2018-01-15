@@ -27,8 +27,8 @@ Func.apply(null, [1 ,2 ,3]); //6 严格模式下 'use strict' null为空
 //模拟bind
 Function.prototype.bind = function(context){
     var self = this; //保存原函数
-    return function(){
-        return this.apply(context, arguments);
+    return function(){ // 返回一个新函数
+        return self.apply(context, arguments);
     }
 };
 
@@ -40,3 +40,42 @@ var func = function(){
     console.log(this.name); //Amy
 }.bind(obj);
 func();
+
+//可自定义参数的bind
+Function.prototype.bind = function(){
+    var self = this, //保存原函数
+        context = [].shift.call(arguments); //指定上下文 obj
+        args = [].slice.call(arguments); //剩下的转换为数组[1, 2]
+        return function(){
+            return self.apply(context, [].concat.call(args, [].slice.call(arguments)));
+            //第一个参数args[1, 2]和后面传入的不定参数[3, 4] 合并为一个参数 即 [1, 2, 3, 4]
+        }
+}
+
+var obj = {
+    name: 'sven'
+}
+
+var func = function(a, b, c, d){
+    console.log(this.name); //输出：even
+    console.log([a, b, c, d]); //输出 [1, 2, 3, 4]
+}.bind(obj, 1, 2);
+func(3, 4);
+
+
+//借用其他对象的方法
+
+var A = function(name){
+    this.name = name;
+}
+
+var B = function(){
+    A.apply(this, arguments);
+}
+
+B.prototype.getName = function(){
+    return this.name;
+}
+
+var b = new B('Amy');
+console.log(b.getName()); //输出：Amy
