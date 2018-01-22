@@ -96,3 +96,34 @@ var getScript = getSingle(function(){
 var script1 = getScript();
 var script2 = getScript();
 console.log(script1 === script2);
+
+
+
+//高阶函数实现AOP（面向切面编程）
+//将一些核心业务逻辑无关的功能抽离出来
+//优点：1、保持业务逻辑模块的纯净；2、高内聚性；3、利于复用
+Function.prototype.before = function(beforeFn){
+    var _self = this; //保存原函数的引用
+    return function(){ //返回包含了原函数和新函数的 “代理”函数
+        beforeFn.apply(this, arguments); //执行新函数，修正this
+        return _self.apply(this, arguments); //执行原函数
+    }
+}
+Function.prototype.after = function(afterFn){
+    var _self = this;
+    return function(){
+        afterFn.apply(this, arguments);
+    }
+}
+
+var func = function(){
+    console.log(2);
+}
+
+func = func.before(function(){
+    console.log(1);
+}).after(function(){
+    console.log(3);
+})
+
+func(); //先后输出：1 2 3
