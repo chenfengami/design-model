@@ -1,3 +1,4 @@
+//把泛化this的过程提取出来。
 //通过uncurring的方式，Array.prototype.push.call变成了一个通用的push函数。
 Function.prototype.uncurring = function(){
     var self = this;

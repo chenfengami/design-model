@@ -34,7 +34,7 @@ var cost = (function(){
             [].push.apply(args, arguments);
         }
     }
-});
+})();
 
 cost(100); //第1天开销
 cost(200); //第2天开销
@@ -57,7 +57,7 @@ var cost = (function(){
     var money = 0;
     return function(){
         for(var i = 0, l = arguments.length; i < l ;i++){
-            money += args[i];
+            money += arguments[i];
         }
         return money;
     }

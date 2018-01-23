@@ -4,7 +4,7 @@ var func = function(){
 }
 func();
 
-//看如下代码 如下就产生一个必报 局部函数a  返回了一个匿名函数，它可以访问到func()被调用的生产环境
+//看如下代码 如下就产生一个闭包 局部函数a  返回了一个匿名函数，它可以访问到func()被调用的生产环境
 var func = function(){
     var a = 1;
     return function(){
