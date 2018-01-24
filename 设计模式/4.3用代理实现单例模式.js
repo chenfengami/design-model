@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <script>
 //为了解决4.2中说到的一些问题。我们引入代理类。
 
 var CreateDiv = function(html){
@@ -38,8 +26,3 @@ var proxySingletonCreateDiv = (function(){
 var a = new proxySingletonCreateDiv('sven1');
 var b = new proxySingletonCreateDiv('sven2');
 console.log(a === b);
-
-    </script>
-</body>
-
-</html>
