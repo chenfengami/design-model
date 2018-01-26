@@ -9,35 +9,33 @@
 </head>
 
 <body>
+        <button id="loginBtn">登录</button>    
     <script>
-//为了解决4.2中说到的一些问题。我们引入代理类。
+        onload = function () {
 
-var CreateDiv = function(html){
-    this.html = html;
-    this.init();
-};
+            //管理单例逻辑
+            var getSingle = function (fn) {
+                var result;
+                return function () {
+                    return result || (result = fn());
+                };
+            }
 
-CreateDiv.prototype.init = function(){
-    var div = document.createElement('div');
-    div.innerHTML = this.html;
-    document.body.appendChild(div);
-}
+            var createLoginLayer = function () {
+                var div = document.createElement('div');
+                div.innerHTML = '我是登录浮框';
+                div.style.display = 'none';
+                document.body.appendChild(div);
+                return div;
+            }
 
-//接下来引入代理类proxySingletonCreateDiv:
+            var createSingleLoginLayer = getSingle(createLoginLayer);
 
-var proxySingletonCreateDiv = (function(){
-    var instance;
-    return function(html){
-        if(!instance){
-            instance = new CreateDiv(html);
+            document.getElementById('loginBtn').onclick = function(){
+                var loginLayer = createSingleLoginLayer();
+                loginLayer.style.display = 'block';
+            }
         }
-        return instance;
-    }
-})();
-
-var a = new proxySingletonCreateDiv('sven1');
-var b = new proxySingletonCreateDiv('sven2');
-console.log(a === b);
 
     </script>
 </body>
