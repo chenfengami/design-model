@@ -68,3 +68,10 @@ Validator.prototype.start = function(){
         }
     }
 }
+
+//在修改某个校验规则的时候，只需要编写或者改写少量的代码。比如把输入框的的校验规则改成不能少于10个字符。
+
+validator.add(registerForm.userName, 'minLength:10', '用户名长度不能小于10位');
+
+
+//给某一个文本输入框添加多种校验规则
