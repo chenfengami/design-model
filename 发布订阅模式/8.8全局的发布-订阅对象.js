@@ -18,7 +18,7 @@ var Event = (function(){
 
     trigger = function(){
         var key = Array.prototype.shift.call(arguments),
-            fn = clientList[key];
+            fns = clientList[key];
             if(!fns || fns.length === 0){
                 return false;
             }
