@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 绘制按钮 -->
+    <button id="button1">刷新菜单目录</button>
+    <button id="button2">增加子菜单</button>
+    <button id="button3">删除子菜单</button>    
+    <script>
+        var oBtn1 = document.getElementById('button1');
+        var oBtn2 = document.getElementById('button2');
+        var oBtn3 = document.getElementById('button3');
+
+
+        //接下来定义setCommand函数，负责往按钮上安装命令，可以肯定的是，点击按钮会执行某个command命令，执行命令的动作被约定为调用command对象的execute()方法。
+
+        var setCommand = function(button, command){
+            button.onclick = function(){
+                command.execute();
+            }
+        };
+
+        //最后，编写具体行为对象。
+
+        var MenuBar = {
+            refresh: function(){
+                console.log('刷新菜单目录');
+            }
+        };
+
+        var SubMenu = {
+            add: function(){
+                console.log('增加子菜单');
+            },
+            del: function(){
+                console.log('删除子菜单');
+            }
+        };
+
+        //在让button变得有用起来之前，我们把这些行为都封装在命令(command)类中：
+        var RefreshMenuBarCommand = function(receiver){
+            this.receiver = receiver;
+        };
+        
+        RefreshMenuBarCommand.prototype.execute = function(){
+            this.receiver.refresh();
+        };
+
+        var AddSubMenuCommand = function(receiver){
+            this.receiver = receiver;
+        };
+
+        AddSubMenuCommand.prototype.execute = function(){
+            this.receiver.add();
+        };
+
+        var DelSubMenuCommand = function(receiver){
+            this.receiver = receiver;
+        };
+
+        DelSubMenuCommand.prototype.execute = function(){
+            this.receiver.del();
+        };
+
+        //最后把命令接收者传入到command对象中，并且把command对象安装到button上面。
+
+        var refreshMenuBarCommand = new RefreshMenuBarCommand(MenuBar);
+        var addSubMenuCommand = new AddSubMenuCommand(SubMenu);
+        var delSubMenuCommand = new DelSubMenuCommand(SubMenu);
+
+        setCommand(oBtn1, refreshMenuBarCommand);
+        setCommand(oBtn2, addSubMenuCommand);
+        setCommand(oBtn3, delSubMenuCommand);
+
+        //以上只是一个很简单的命令模式示例，但从中我们可以看到我们是如何把请求发送者和请求接收者解耦开的。
+    </script>
+</body>
+
+</html>
