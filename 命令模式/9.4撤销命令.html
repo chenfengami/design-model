@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="ball" style="position:absolute;background:#000;width:50px;height:50px;"></div>
+    输入小球移动后的位置：<input id="pos" />
+    <button id="moveBtn">开始移动</button>
+    <button id="cancelBtn">取消</button>
+    <script>
+        
+        var oBall = document.getElementById('ball');
+        var oPos = document.getElementById('pos');
+        var moveBtn = document.getElementById('moveBtn');
+
+        var MoveCommand = function(receiver, pos){
+            this.receiver = receiver;
+            this.pos = pos;
+            this.oldPos = null;
+        };
+
+        MoveCommand.prototype.execute = function(){
+            this.receiver.start('left', this.pos, 1000, 'strongEaseOut');
+            //记录小球开始移动前的位置
+            this.oldPos = this.receiver.dom.getBoundingClientRect()[this.receiver.propertyName];
+        };
+
+        MoveCommand.prototype.undo = function(){
+            //回到小球移动前记录的位置
+            this.receiver.start('left', this.oldPos, 1000, 'strongEaseOut');
+        }
+
+        var moveCommand;
+
+        moveBtn.onclick = function(){
+            var animate = new Animate(ball);
+            moveCommand = new MoveCommand(animate, pos.value);
+            moveCommand.execute();
+        };
+
+        cancelBtn.onclick = function(){
+            moveCommand.undo();
+        }
+    </script>
+</body>
+
+</html>
