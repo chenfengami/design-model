@@ -54,7 +54,7 @@ var uploadManager = (function () {
             var dom = document.createElement('div');
             dom.innerHTML =
                 `
-                        <span>文件名称：${ this.fileName}, 文件大小：${this.fileSize}</span>
+                        <span>文件名称：${fileName}, 文件大小：${fileSize}</span>
                         <button class="delFile">删除</button>
                     `;
             dom.querySelector('.delFile').onclick = function () {
