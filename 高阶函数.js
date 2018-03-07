@@ -112,7 +112,9 @@ Function.prototype.before = function(beforeFn){
 Function.prototype.after = function(afterFn){
     var _self = this;
     return function(){
+        var ret = _self.apply(this, arguments);
         afterFn.apply(this, arguments);
+        return ret;
     }
 }
 
