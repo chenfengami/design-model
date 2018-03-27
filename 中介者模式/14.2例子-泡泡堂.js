@@ -53,5 +53,45 @@ Player.prototype.win = function(){ //玩家团队胜利
 
 Player.prototype.lose = function(){
     console.log('loser' + this.name); //玩家团队失败
-}
+};
 
+Player.prototype.die = function(){ //玩家死亡
+    var all_read = true;
+    this.state = 'dead'; //设置玩家状态为死亡
+
+    for(var i = 0, partner; partner = this.partners[i++];){ //遍历队友列表
+        if(partner.state !== 'dead'){ // 如果还有一个队友没有死亡，则游戏未失败
+            all_read = false;
+            break;
+        }
+    }
+
+    if(all_read === true){ //如果队友全部死亡
+        this.lose(); //通知自己游戏失败
+        for(var i = 0, partner; partner = this.partners[i++];){
+            partner.lose();
+        }
+        for(var i = 0, enemy; enemy = this.enmies[i++];){ //通知所有敌人游戏胜利
+            enemy.win();
+        }
+    }
+};
+
+//最后定义一个工厂来创建玩家：
+
+var playerFactory = function(name, teamColor){
+    var newPlayer = new Player(name, teamColor); //创建新玩家
+
+    for(var i = 0, player; player = players[i++];){ //通知所有的玩家，有新角色加入
+        if(player.teamColor === newPlayer.teamColor){ //如果是同一队的玩家
+            player.partners.push(newPlayer); //相互添加到队友列表
+            newPlayer.partners.push(player);
+        }else{
+            player.enmies.push(); // 相互添加到敌人列表
+            newPlayer.enmies.push(player);
+        }
+    }
+    players.push(newPlayer);
+
+    return newPlayer;
+};
